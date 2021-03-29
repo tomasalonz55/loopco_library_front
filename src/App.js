@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
+import Nav from "./components/Nav";
+import Home from "./pages/Home";
+import Admin from "./pages/Admin";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import AddBook from "./pages/AddBook";
+import "./App.css";
+import axios from "axios";
+import { AuthContext } from "./context/auth";
+import GlobalStyles from "./components/GlobalStyles";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	axios.defaults.headers.post["Content-Type"] = "application/json";
+	axios.defaults.headers.post["Accept"] = "application/json";
+	const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+	const [authTokens, setAuthTokens] = useState(existingTokens);
+	axios.defaults.headers.common = {
+		Authorization: `Bearer ${existingTokens ? existingTokens["token"] : ""}`,
+	};
+	const setTokens = (data) => {
+		localStorage.setItem("tokens", JSON.stringify(data));
+		setAuthTokens(data);
+	};
+	return (
+		<div className="App">
+			<AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+				<GlobalStyles />
+				<Router>
+					<div>
+						<Nav existingTokens={existingTokens} />
+						<Route exact path="/" component={Home} />
+						<Route path="/login" component={Login} />
+						<Route path="/signup" component={Signup} />
+						<PrivateRoute path="/admin" component={Admin} />
+						<PrivateRoute path="/addBook" component={AddBook} />
+					</div>
+				</Router>
+			</AuthContext.Provider>
+		</div>
+	);
 }
 
 export default App;
