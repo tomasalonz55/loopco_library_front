@@ -47,7 +47,7 @@ function AddCategory(props) {
 					onChange={(e) => {
 						setDescription(e.target.value);
 					}}
-					placeholder="Author"
+					placeholder="Description"
 					required
 				/>
 
