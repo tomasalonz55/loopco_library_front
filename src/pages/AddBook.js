@@ -38,7 +38,6 @@ function AddBook(props) {
 
 	const postBooks = async (e) => {
 		e.preventDefault();
-		console.log("hola");
 		try {
 			const booksData = await axios.post(booksURL(), {
 				name,
@@ -58,9 +57,7 @@ function AddBook(props) {
 	};
 
 	const handleChange = (e) => {
-		setCategoryName(e.target.value);
 		setCategoryID(e.target.value);
-		console.log(categoryName);
 	};
 
 	return (
@@ -73,7 +70,7 @@ function AddBook(props) {
 					onChange={(e) => {
 						setName(e.target.value);
 					}}
-					placeholder="Nombre"
+					placeholder="Name"
 					required
 				/>
 				<Input
@@ -86,7 +83,7 @@ function AddBook(props) {
 					required
 				/>
 				<p>Pick the category:</p>
-				<Select required value={categoryName} onChange={handleChange}>
+				<Select required onChange={handleChange}>
 					<option selected value="">
 						Select a Category
 					</option>

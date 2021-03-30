@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 import { booksURL } from "../api";
 import styled from "styled-components";
 import Book from "../components/Book";
@@ -15,6 +14,14 @@ function Admin(props) {
 		const booksData = await axios.get(booksURL());
 		setAppState({ loading: false, books: booksData });
 	};
+	const fetchNext = async (url) => {
+		const booksData = await axios.get(appState.books.data.next_page_url);
+		setAppState({ loading: false, books: booksData });
+	};
+	const fetchPrev = async () => {
+		const booksData = await axios.get(appState.books.data.prev_page_url);
+		setAppState({ loading: false, books: booksData });
+	};
 	useEffect(() => {
 		loadBooks();
 	}, [setAppState]);
@@ -26,26 +33,36 @@ function Admin(props) {
 			<Link to="/addCategory">
 				<Button>New Category</Button>
 			</Link>
-			<BookList>
-				{!appState.loading && (
-					<div>
+			{!appState.loading && (
+				<div>
+					<BookList>
 						<h2>List of Books</h2>
 						<Books>
 							{appState.books.data.data.map((book) => (
 								<Book
-									name={book.name}
-									image={book.image}
-									author={book.author}
-									publication_date={book.publication_date}
-									category_id={book.category_id}
+									bookName={book.name}
+									bookImage={book.image}
+									bookAuthor={book.author}
+									bookPublicationDate={book.publication_date}
+									bookCategoryId={book.category_id}
+									bookUser={book.user_id}
+									bookId={book.id}
+									categoryName={book.category.name}
+									userName={book.user ? book.user.name : ""}
 									key={book.id}
-									id={book.id}
+									loadBooks={loadBooks}
 								></Book>
 							))}
 						</Books>
-					</div>
-				)}
-			</BookList>
+					</BookList>
+					{appState.books.data.prev_page_url && (
+						<Button onClick={fetchPrev}>Prev</Button>
+					)}
+					{appState.books.data.next_page_url && (
+						<Button onClick={fetchNext}>Next</Button>
+					)}
+				</div>
+			)}
 			<br />
 			<br />
 		</div>

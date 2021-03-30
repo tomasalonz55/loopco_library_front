@@ -7,10 +7,12 @@ import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AddBook from "./pages/AddBook";
+import EditBook from "./pages/EditBook";
 import "./App.css";
 import axios from "axios";
 import { AuthContext } from "./context/auth";
 import GlobalStyles from "./components/GlobalStyles";
+import AddCategory from "./pages/AddCategory";
 
 function App() {
 	axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -35,7 +37,9 @@ function App() {
 						<Route path="/login" component={Login} />
 						<Route path="/signup" component={Signup} />
 						<PrivateRoute path="/admin" component={Admin} />
+						<PrivateRoute path={["/editBook/:id"]} component={EditBook} />
 						<PrivateRoute path="/addBook" component={AddBook} />
+						<PrivateRoute path="/addCategory" component={AddCategory} />
 					</div>
 				</Router>
 			</AuthContext.Provider>

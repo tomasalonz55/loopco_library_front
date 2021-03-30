@@ -54,4 +54,15 @@ const Error = styled.div`
 	background-color: red;
 `;
 
-export { Form, Input, Button, Logo, Card, Error, Select };
+const customModalStyles = {
+	content: {
+		top: "50%",
+		left: "50%",
+		right: "auto",
+		bottom: "auto",
+		marginRight: "-50%",
+		transform: "translate(-50%, -50%)",
+	},
+};
+
+export { Form, Input, Button, Logo, Card, Error, Select, customModalStyles };
